@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import requests
 
-# Your Census API key
 CENSUS_API_KEY = "2cdb75bfaa3c0d34543d6f866676c97e3c8e9751"
 
 @st.cache_data
@@ -32,40 +31,45 @@ def fetch_susb_data(naics_list):
             record["NAICS_Code"] = naics
             all_data.append(record)
         except Exception as e:
-            st.warning(f"Failed to fetch data for {naics}: {e}")
+            st.warning(f"❌ {naics}: {e}")
     return pd.DataFrame(all_data)
 
-# Load the crosswalk file
+# Load NAICS crosswalk
 df_crosswalk = load_crosswalk()
 
-# Streamlit UI
-st.title("CI Sector to NAICS Explorer with SUSB Integration")
+# Sidebar or main filters
+st.title("CI-SUSB Dashboard MVP")
 
-sector_options = df_crosswalk["CI_Sector"].dropna().unique()
-selected_sector = st.selectbox("Select CI Sector", sector_options)
+sector_options = sorted(df_crosswalk["CI_Sector"].dropna().unique())
+selected_sector = st.selectbox("Select CI Sector", ["All"] + sector_options)
 
-df_filtered = df_crosswalk[df_crosswalk["CI_Sector"] == selected_sector]
+if selected_sector == "All":
+    df_filtered = df_crosswalk.copy()
+else:
+    df_filtered = df_crosswalk[df_crosswalk["CI_Sector"] == selected_sector]
 
 if "Subsector" in df_filtered.columns and df_filtered["Subsector"].notnull().any():
-    subsector_options = df_filtered["Subsector"].dropna().unique()
-    selected_subsector = st.selectbox("Select Subsector (optional)", ["All"] + list(subsector_options))
+    subsector_options = sorted(df_filtered["Subsector"].dropna().unique())
+    selected_subsector = st.selectbox("Select Subsector (optional)", ["All"] + subsector_options)
+
     if selected_subsector != "All":
         df_filtered = df_filtered[df_filtered["Subsector"] == selected_subsector]
 
+# Show filtered NAICS codes
 st.write("Filtered NAICS Codes:")
-st.dataframe(df_filtered)
+st.dataframe(df_filtered[["CI_Sector", "Subsector", "NAICS_Code", "NAICS_Description"]])
 
+# Fetch SUSB data
 if st.button("Fetch SUSB Data"):
-    with st.spinner("Fetching live data from Census API..."):
+    with st.spinner("Pulling SUSB records from Census API..."):
         susb_data = fetch_susb_data(df_filtered["NAICS_Code"].unique().tolist())
 
         if not susb_data.empty:
             merged = df_filtered.merge(susb_data, on="NAICS_Code", how="left")
-            st.success("SUSB data retrieved!")
+            st.success("✅ SUSB data retrieved for available NAICS codes.")
             st.dataframe(merged)
 
-            # Export
             csv = merged.to_csv(index=False)
-            st.download_button("Download CSV", csv, file_name="ci_susb_merged_data.csv", mime="text/csv")
+            st.download_button("📥 Download CSV", csv, file_name="ci_susb_merged_data.csv", mime="text/csv")
         else:
-            st.error("No data retrieved from Census.")
+            st.error("No data retrieved. Check API key or selected NAICS availability.")
