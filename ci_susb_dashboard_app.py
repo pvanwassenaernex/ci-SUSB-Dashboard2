@@ -1,30 +1,71 @@
 import streamlit as st
 import pandas as pd
+import requests
+
+# Your Census API key
+CENSUS_API_KEY = "2cdb75bfaa3c0d34543d6f866676c97e3c8e9751"
 
 @st.cache_data
-def load_data():
-    return pd.read_csv("ci_naics_crosswalk_6digit_major.csv")  # ← use your uploaded real file
+def load_crosswalk():
+    return pd.read_csv("ci_naics_crosswalk_6digit_major.csv", dtype=str)
 
-df = load_data()
+@st.cache_data
+def fetch_susb_data(naics_list):
+    all_data = []
+    base_url = "https://api.census.gov/data/2022/susb"
+    variables = ["FIRM", "ESTAB", "EMP", "AP", "RCP"]
 
-st.title("CI–NAICS Crosswalk Viewer")
+    for naics in naics_list:
+        params = {
+            "get": ",".join(variables),
+            "for": "us:*",
+            "NAICS2022": naics,
+            "key": CENSUS_API_KEY
+        }
+        try:
+            response = requests.get(base_url, params=params)
+            response.raise_for_status()
+            json_data = response.json()
+            headers = json_data[0]
+            values = json_data[1]
+            record = dict(zip(headers, values))
+            record["NAICS_Code"] = naics
+            all_data.append(record)
+        except Exception as e:
+            st.warning(f"Failed to fetch data for {naics}: {e}")
+    return pd.DataFrame(all_data)
 
-# Step 1: Select CI Sector
-sectors = df['CI_Sector'].dropna().unique()
-selected_sector = st.selectbox("Select a CI Sector", sectors)
+# Load the crosswalk file
+df_crosswalk = load_crosswalk()
 
-filtered_df = df[df['CI_Sector'] == selected_sector]
+# Streamlit UI
+st.title("CI Sector to NAICS Explorer with SUSB Integration")
 
-# Step 2: Optional Subsector filter
-if 'Subsector' in filtered_df.columns and filtered_df['Subsector'].notnull().any():
-    subsectors = filtered_df['Subsector'].dropna().unique()
-    selected_subsector = st.selectbox("Select a Subsector (optional)", ['All'] + list(subsectors))
-    if selected_subsector != 'All':
-        filtered_df = filtered_df[filtered_df['Subsector'] == selected_subsector]
+sector_options = df_crosswalk["CI_Sector"].dropna().unique()
+selected_sector = st.selectbox("Select CI Sector", sector_options)
 
-# Step 3: Display Filtered Results
-st.subheader("Matching NAICS Codes")
-st.dataframe(filtered_df)
+df_filtered = df_crosswalk[df_crosswalk["CI_Sector"] == selected_sector]
 
-# Step 4: Download filtered results
-st.download_button("Download Filtered Results as CSV", filtered_df.to_csv(index=False), file_name="filtered_ci_naics.csv", mime="text/csv")
+if "Subsector" in df_filtered.columns and df_filtered["Subsector"].notnull().any():
+    subsector_options = df_filtered["Subsector"].dropna().unique()
+    selected_subsector = st.selectbox("Select Subsector (optional)", ["All"] + list(subsector_options))
+    if selected_subsector != "All":
+        df_filtered = df_filtered[df_filtered["Subsector"] == selected_subsector]
+
+st.write("Filtered NAICS Codes:")
+st.dataframe(df_filtered)
+
+if st.button("Fetch SUSB Data"):
+    with st.spinner("Fetching live data from Census API..."):
+        susb_data = fetch_susb_data(df_filtered["NAICS_Code"].unique().tolist())
+
+        if not susb_data.empty:
+            merged = df_filtered.merge(susb_data, on="NAICS_Code", how="left")
+            st.success("SUSB data retrieved!")
+            st.dataframe(merged)
+
+            # Export
+            csv = merged.to_csv(index=False)
+            st.download_button("Download CSV", csv, file_name="ci_susb_merged_data.csv", mime="text/csv")
+        else:
+            st.error("No data retrieved from Census.")
