@@ -1,0 +1,5 @@
+CI Sector,CI Subsector,NAICS Code,NAICS Description,Firms,Establishments,Employment,"Annual Payroll ($1,000)","Receipts ($1,000)"
+Chemical,Basic Chemicals,325110,Petrochemical Manufacturing,120,140,18000,1350000,4500000
+Chemical,Specialty Chemicals,325120,Industrial Gas Manufacturing,80,100,9000,670000,2200000
+Healthcare,Hospitals,622110,General Medical and Surgical Hospitals,300,350,75000,5400000,18000000
+Healthcare,Ambulatory Services,621111,Offices of Physicians (except Mental Health Specialists),500,620,42000,3200000,9800000
