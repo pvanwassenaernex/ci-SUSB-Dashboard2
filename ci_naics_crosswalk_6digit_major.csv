@@ -1,0 +1,121 @@
+CI_Sector,Subsector,NAICS_Code,NAICS_Description
+Chemical,Basic Chemicals,325110,Petrochemical Manufacturing
+Chemical,Basic Chemicals,325120,Industrial Gas Manufacturing
+Chemical,Basic Chemicals,325180,Other Basic Inorganic Chemical Manufacturing
+Chemical,Basic Chemicals,325199,All Other Basic Organic Chemical Manufacturing
+Chemical,Specialty Chemicals,325130,Synthetic Dye and Pigment Manufacturing
+Chemical,Specialty Chemicals,325510,Paint and Coating Manufacturing
+Chemical,Specialty Chemicals,325520,Adhesive Manufacturing
+Chemical,Specialty Chemicals,325998,All Other Miscellaneous Chemical Product and Preparation Manufacturing
+Chemical,Agricultural Chemicals,325311,Nitrogenous Fertilizer Manufacturing
+Chemical,Agricultural Chemicals,325312,Phosphatic Fertilizer Manufacturing
+Chemical,Agricultural Chemicals,325320,Pesticide and Other Agricultural Chemical Manufacturing
+Chemical,Consumer Products,325611,Soap and Other Detergent Manufacturing
+Chemical,Consumer Products,325612,Polish and Other Sanitation Good Manufacturing
+Chemical,Consumer Products,325620,Toilet Preparation Manufacturing
+Chemical,Pharmaceuticals,325412,Pharmaceutical Preparation Manufacturing
+Chemical,Pharmaceuticals,325414,Biological Product (except Diagnostic) Manufacturing
+Commercial Facilities,Entertainment,711110,Theater Companies and Dinner Theaters
+Commercial Facilities,Entertainment,711212,Racetracks
+Commercial Facilities,Entertainment,711219,Other Spectator Sports
+Commercial Facilities,Entertainment,712110,Museums
+Commercial Facilities,Entertainment,712130,Zoos and Botanical Gardens
+Commercial Facilities,Amusement & Recreation,713110,Amusement and Theme Parks
+Commercial Facilities,Amusement & Recreation,713940,Fitness and Recreational Sports Centers
+Commercial Facilities,Lodging,721110,Hotels (except Casino Hotels) and Motels
+Commercial Facilities,Lodging,721120,Casino Hotels
+Commercial Facilities,Lodging,721211,RV (Recreational Vehicle) Parks and Campgrounds
+Commercial Facilities,Lodging,721214,Recreational and Vacation Camps
+Commercial Facilities,Public Assembly,722310,"Food Service Contractors (at stadiums, arenas, etc.)"
+Commercial Facilities,Real Estate,531120,Lessors of Nonresidential Buildings (except Miniwarehouses)
+Commercial Facilities,Retail,445110,Supermarkets and Other Grocery (except Convenience) Stores
+Commercial Facilities,Retail,455110,Department Stores
+Commercial Facilities,Retail,455219,All Other General Merchandise Stores
+Communications,Broadcasting,515111,Radio Networks
+Communications,Broadcasting,515120,Television Broadcasting
+Communications,Telecom Wireline,517111,Wired Telecommunications Carriers
+Communications,Telecom Wireless,517312,Wireless Telecommunications Carriers (except Satellite)
+Communications,Satellite,517410,Satellite Telecommunications
+Communications,Data Processing & Hosting,518210,"Data Processing, Hosting, and Related Services"
+Communications,Other Information Services,519290,All Other Information Services
+Critical Manufacturing,Primary Metals,331110,Iron and Steel Mills and Ferroalloy Manufacturing
+Critical Manufacturing,Primary Metals,331491,"Nonferrous Metal (except Copper and Aluminum) Rolling, Drawing, and Extruding"
+Critical Manufacturing,Machinery,333120,Construction Machinery Manufacturing
+Critical Manufacturing,Machinery,333611,Turbine and Turbine Generator Set Units Manufacturing
+Critical Manufacturing,Electrical Equipment,335110,Electric Lamp Bulb and Part Manufacturing
+Critical Manufacturing,Electrical Equipment,335312,Motor and Generator Manufacturing
+Critical Manufacturing,Transportation Equipment,336111,Automobile Manufacturing
+Critical Manufacturing,Transportation Equipment,336411,Aircraft Manufacturing
+Critical Manufacturing,Transportation Equipment,336611,Ship Building and Repairing
+Dams,Hydropower,221111,Hydroelectric Power Generation
+Dams,Water Supply,221310,Water Supply and Irrigation Systems
+Dams,Construction,237990,Other Heavy and Civil Engineering Construction
+Defense Industrial Base,Aerospace,336411,Aircraft Manufacturing
+Defense Industrial Base,Aerospace,336414,Guided Missile and Space Vehicle Manufacturing
+Defense Industrial Base,Weapons,332992,Small Arms Ammunition Manufacturing
+Defense Industrial Base,Weapons,332994,"Small Arms, Ordnance, and Ordnance Accessories Manufacturing"
+Defense Industrial Base,Comms Equipment,334220,Radio and Television Broadcasting and Wireless Communications Equipment Manufacturing
+Defense Industrial Base,Cybersecurity,541512,Computer Systems Design Services
+Emergency Services,Law Enforcement,922120,Police Protection
+Emergency Services,Fire & Rescue,922160,Fire Protection
+Emergency Services,Ambulance Services,621910,Ambulance Services
+Emergency Services,Emergency Management,922190,"Other Justice, Public Order, and Safety Activities"
+Energy,Electricity,221111,Hydroelectric Power Generation
+Energy,Electricity,221112,Fossil Fuel Electric Power Generation
+Energy,Electricity,221113,Nuclear Electric Power Generation
+Energy,Electricity,221121,Electric Bulk Power Transmission and Control
+Energy,Electricity,221122,Electric Power Distribution
+Energy,Petroleum,211120,Crude Petroleum Extraction
+Energy,Petroleum,324110,Petroleum Refineries
+Energy,Petroleum,486110,Pipeline Transportation of Crude Oil
+Energy,Petroleum,486910,Pipeline Transportation of Refined Petroleum Products
+Energy,Natural Gas,211130,Natural Gas Extraction
+Energy,Natural Gas,221210,Natural Gas Distribution
+Energy,Natural Gas,486210,Pipeline Transportation of Natural Gas
+Financial Services,Banking,522110,Commercial Banking
+Financial Services,Banking,522130,Credit Unions
+Financial Services,Investment,523110,Investment Banking and Securities Dealing
+Financial Services,Insurance,524113,"Direct Life, Health, and Medical Insurance Carriers"
+Food and Agriculture,Farms,111110,Soybean Farming
+Food and Agriculture,Farms,112120,Dairy Cattle and Milk Production
+Food and Agriculture,Food Manufacturing,311511,Fluid Milk Manufacturing
+Food and Agriculture,Food Manufacturing,311615,Poultry Processing
+Food and Agriculture,Food Manufacturing,311812,Commercial Bakeries
+Food and Agriculture,Food Manufacturing,311813,"Frozen Cakes, Pies, and Other Pastries Manufacturing"
+Food and Agriculture,Food Services,722511,Full-Service Restaurants
+Food and Agriculture,Food Distribution,424410,General Line Grocery Merchant Wholesalers
+Food and Agriculture,Food Retail,445110,Supermarkets and Other Grocery (except Convenience) Stores
+Government Facilities,Executive,921110,Executive Offices
+Government Facilities,Justice/Public Safety,922120,Police Protection
+Government Facilities,Justice/Public Safety,922140,Correctional Institutions
+Government Facilities,National Security,928110,National Security
+Healthcare and Public Health,Hospitals,622110,General Medical and Surgical Hospitals
+Healthcare and Public Health,Hospitals,622210,Psychiatric and Substance Abuse Hospitals
+Healthcare and Public Health,Ambulatory,621111,Offices of Physicians (except Mental Health Specialists)
+Healthcare and Public Health,Ambulatory,621210,Offices of Dentists
+Healthcare and Public Health,Ambulatory,621610,Home Health Care Services
+Healthcare and Public Health,Nursing & Residential,623110,Nursing Care Facilities (Skilled Nursing Facilities)
+Healthcare and Public Health,Pharma & Medical,325412,Pharmaceutical Preparation Manufacturing
+Healthcare and Public Health,Med Supply & Equipment,339112,Surgical and Medical Instrument Manufacturing
+Healthcare and Public Health,Pharmacies,446110,Pharmacies and Drug Stores
+Information Technology,IT Services,541511,Custom Computer Programming Services
+Information Technology,IT Services,541512,Computer Systems Design Services
+Information Technology,Software,511210,Software Publishers
+Information Technology,Data Processing,518210,"Data Processing, Hosting, and Related Services"
+"Nuclear Reactors, Materials, and Waste",Nuclear Power,221113,Nuclear Electric Power Generation
+"Nuclear Reactors, Materials, and Waste",Nuclear Waste,562211,Hazardous Waste Treatment and Disposal
+"Nuclear Reactors, Materials, and Waste",Nuclear Engineering,541330,Engineering Services
+Transportation Systems,Air,481111,Scheduled Passenger Air Transportation
+Transportation Systems,Air,481112,Scheduled Freight Air Transportation
+Transportation Systems,Rail,482111,Line-Haul Railroads
+Transportation Systems,Rail,482112,Short Line Railroads
+Transportation Systems,Water,483111,Deep Sea Freight Transportation
+Transportation Systems,Truck,484121,"General Freight Trucking, Long-Distance, Truckload"
+Transportation Systems,Truck,484122,"General Freight Trucking, Long-Distance, Less Than Truckload"
+Transportation Systems,Mass Transit,485111,Mixed Mode Transit Systems
+Transportation Systems,Pipeline,486110,Pipeline Transportation of Crude Oil
+Transportation Systems,Pipeline,486210,Pipeline Transportation of Natural Gas
+Transportation Systems,Support Activities,488119,Other Airport Operations
+Water and Wastewater Systems,Water Supply,221310,Water Supply and Irrigation Systems
+Water and Wastewater Systems,Water Treatment,221320,Sewage Treatment Facilities
+Water and Wastewater Systems,Construction,237110,Water and Sewer Line and Related Structures Construction
