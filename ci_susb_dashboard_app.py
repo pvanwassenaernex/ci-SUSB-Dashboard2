@@ -1,75 +1,72 @@
+from pathlib import Path
+
+# Define the path for the updated app file
+updated_app_path = Path("/mnt/data/ci_susb_dashboard_app_updated.py")
+
+# Updated app code as a Python string
+updated_app_code = """
 import streamlit as st
 import pandas as pd
-import requests
 
-CENSUS_API_KEY = "2cdb75bfaa3c0d34543d6f866676c97e3c8e9751"
+# Load CI-to-NAICS crosswalk
+crosswalk_df = pd.read_csv("ci_naics_crosswalk_6digit_major.csv", dtype=str)
 
-@st.cache_data
-def load_crosswalk():
-    return pd.read_csv("ci_naics_crosswalk_6digit_major.csv", dtype=str)
+# Load full SUSB dataset
+susb_df = pd.read_csv("us_state_6digitnaics_2022.csv", dtype=str)
 
-@st.cache_data
-def fetch_susb_data(naics_list):
-    all_data = []
-    base_url = "https://api.census.gov/data/2022/susb"
-    variables = ["FIRM", "ESTAB", "EMP", "AP", "RCP"]
+# Clean up numeric columns
+for col in ["Firms*", "Establishments*", "Employment*", "Annual Payroll ($1,000)", "Receipts ($1,000)"]:
+    if col in susb_df.columns:
+        susb_df[col] = susb_df[col].str.replace(",", "").astype(float)
 
-    for naics in naics_list:
-        params = {
-            "get": ",".join(variables),
-            "for": "us:*",
-            "NAICS2022": naics,
-            "key": CENSUS_API_KEY
-        }
-        try:
-            response = requests.get(base_url, params=params)
-            response.raise_for_status()
-            json_data = response.json()
-            headers = json_data[0]
-            values = json_data[1]
-            record = dict(zip(headers, values))
-            record["NAICS_Code"] = naics
-            all_data.append(record)
-        except Exception as e:
-            st.warning(f"❌ {naics}: {e}")
-    return pd.DataFrame(all_data)
+# Filter SUSB to national total and overall firm size
+susb_df = susb_df[(susb_df["State"] == "00") & (susb_df["Enterprise Size"] == "01: Total")]
 
-# Load NAICS crosswalk
-df_crosswalk = load_crosswalk()
-
-# Sidebar or main filters
 st.title("CI-SUSB Dashboard MVP")
 
-sector_options = sorted(df_crosswalk["CI_Sector"].dropna().unique())
-selected_sector = st.selectbox("Select CI Sector", ["All"] + sector_options)
+# CI sector filter
+ci_sectors = sorted(crosswalk_df["CI_Sector"].unique().tolist())
+ci_sector = st.selectbox("Select CI Sector", ["All"] + ci_sectors)
 
-if selected_sector == "All":
-    df_filtered = df_crosswalk.copy()
+# Subsector filter
+if ci_sector != "All":
+    filtered_subs = sorted(crosswalk_df[crosswalk_df["CI_Sector"] == ci_sector]["Subsector"].unique())
 else:
-    df_filtered = df_crosswalk[df_crosswalk["CI_Sector"] == selected_sector]
+    filtered_subs = sorted(crosswalk_df["Subsector"].unique())
+subsector = st.selectbox("Select Subsector (optional)", ["All"] + filtered_subs)
 
-if "Subsector" in df_filtered.columns and df_filtered["Subsector"].notnull().any():
-    subsector_options = sorted(df_filtered["Subsector"].dropna().unique())
-    selected_subsector = st.selectbox("Select Subsector (optional)", ["All"] + subsector_options)
+# Filter NAICS codes
+filtered_crosswalk = crosswalk_df.copy()
+if ci_sector != "All":
+    filtered_crosswalk = filtered_crosswalk[filtered_crosswalk["CI_Sector"] == ci_sector]
+if subsector != "All":
+    filtered_crosswalk = filtered_crosswalk[filtered_crosswalk["Subsector"] == subsector]
 
-    if selected_subsector != "All":
-        df_filtered = df_filtered[df_filtered["Subsector"] == selected_subsector]
+naics_codes = filtered_crosswalk["NAICS_Code"].unique()
+filtered_susb = susb_df[susb_df["NAICS"].isin(naics_codes)]
 
-# Show filtered NAICS codes
-st.write("Filtered NAICS Codes:")
-st.dataframe(df_filtered[["CI_Sector", "Subsector", "NAICS_Code", "NAICS_Description"]])
+# Merge descriptions from crosswalk
+merged_df = pd.merge(filtered_crosswalk, filtered_susb, left_on="NAICS_Code", right_on="NAICS", how="left")
 
-# Fetch SUSB data
-if st.button("Fetch SUSB Data"):
-    with st.spinner("Pulling SUSB records from Census API..."):
-        susb_data = fetch_susb_data(df_filtered["NAICS_Code"].unique().tolist())
+# Display table
+st.subheader("Filtered NAICS + SUSB Data:")
+st.dataframe(merged_df[[
+    "CI_Sector", "Subsector", "NAICS_Code", "NAICS_Description", 
+    "Firms*", "Establishments*", "Employment*", 
+    "Annual Payroll ($1,000)", "Receipts ($1,000)"
+]])
 
-        if not susb_data.empty:
-            merged = df_filtered.merge(susb_data, on="NAICS_Code", how="left")
-            st.success("✅ SUSB data retrieved for available NAICS codes.")
-            st.dataframe(merged)
+# Download button
+st.download_button(
+    label="Export to CSV",
+    data=merged_df.to_csv(index=False).encode('utf-8'),
+    file_name="filtered_ci_susb_data.csv",
+    mime="text/csv"
+)
+"""
 
-            csv = merged.to_csv(index=False)
-            st.download_button("📥 Download CSV", csv, file_name="ci_susb_merged_data.csv", mime="text/csv")
-        else:
-            st.error("No data retrieved. Check API key or selected NAICS availability.")
+# Write the updated code to file
+updated_app_path.write_text(updated_app_code)
+
+# Return path for user to download or deploy
+updated_app_path.name
